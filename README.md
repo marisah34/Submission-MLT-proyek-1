@@ -143,7 +143,7 @@ Berdasarkan boxplot, distribusi nilai MCH pada individu yang menderita anemia da
   Penting untuk dicatat, standarisasi hanya diterapkan pada data latih guna mencegah kebocoran informasi ke data uji. Berikut ditampilkan hasil dari proses standarisasi.
   ![image](https://github.com/user-attachments/assets/51712d09-6de6-467c-9d14-0468350b533c)
 
-## Modeling 
+## 📌 Modeling 
 
 Pada tahap ini, beberapa algoritma machine learning digunakan untuk menyelesaikan klasifikasi anemia, yaitu Random Forest, Decision Tree, Logistic Regression, dan K-Nearest Neighbors. Awalnya, setiap model dilatih menggunakan parameter default pada data latih yang telah diskalakan dan diseimbangkan (X_train_scaled dan y_train_resampled), untuk memperoleh baseline atau kinerja awal model tanpa optimasi.
 
@@ -183,7 +183,7 @@ rf = RandomForestClassifier().fit(X_train_scaled, y_train_resampled)
 - Proses pelatihan lebih lama jika jumlah pohon sangat besar.
 - Kurang interpretatif dibandingkan dengan model pohon keputusan tunggal.
 
-### 1. Model Decision Tree
+### 2. Model Decision Tree
 ![decision-tree-1](https://github.com/user-attachments/assets/06dafe10-41e9-4a0a-81fc-1cc978bd7bff)
 
 Decision tree adalah sebuah metode atau algoritma pembelajaran yang diawasi (supervised learning) dan bersifat non-parametrik yang digunakan untuk memprediksi atau memodelkan data. Ia menggunakan struktur pohon hierarkis untuk membuat keputusan berdasarkan serangkaian aturan, mulai dari simpul akar hingga simpul daun. Decision tree dapat digunakan untuk tugas klasifikasi dan regresi.
@@ -192,3 +192,290 @@ Berikut merupakan code pelatihan model:
 ```python
 dt = DecisionTreeClassifier().fit(X_train_scaled, y_train_resampled)
 ```
+
+**Tahapan** 
+
+**Decision Tree** merupakan metode machine learning yang membentuk model berbentuk pohon keputusan untuk melakukan prediksi berdasarkan fitur-fitur input. Proses diawali dengan memilih fitur yang paling efektif dalam membagi dataset, menggunakan kriteria seperti Gini Impurity atau Entropy. Pembagian ini dilakukan secara berulang pada setiap node, sehingga data terbagi menjadi subset yang semakin homogen. Pemilihan fitur terbaik untuk setiap node dilakukan secara rekursif, hingga mencapai kedalaman maksimum pohon atau ketika tidak ada lagi pembagian yang lebih optimal. Proses tersebut berlanjut sampai model mencapai kondisi di mana pemisahan lebih lanjut tidak memberikan keuntungan, atau mencapai batas penghentian yang telah ditentukan, seperti jumlah minimum sampel dalam satu node atau batas kedalaman pohon.
+
+**Parameter yang Digunakan:**
+
+- `max_depth`: Batas maksimal kedalaman pohon.
+
+- `min_samples_split`: Jumlah minimum data yang diperlukan untuk membagi node.
+
+- `min_samples_leaf`: Jumlah minimum data yang harus ada pada setiap daun pohon.
+
+- `criterion`: Metode evaluasi untuk menentukan kualitas pemisahan data (misalnya gini atau entropy).
+
+**Kelebihan**
+
+- Mudah dipahami dan dijelaskan.
+
+- Cepat dalam proses pelatihan dan prediksi.
+
+- Mampu menangani tipe data numerik maupun kategorikal.
+
+**Kekurangan**
+
+- Berisiko mengalami overfitting, terutama jika pohon terlalu dalam.
+
+- Kurang stabil jika diterapkan pada data yang mengandung noise.
+
+### 3. Model Logistic Regression
+![images](https://github.com/user-attachments/assets/09c263aa-f387-489e-b3b0-f847533091ad)
+
+
+Logistic regression adalah metode analisis statistik untuk memprediksi hasil biner, seperti ya atau tidak, berdasarkan pengamatan sebelumnya dari kumpulan data.
+
+Berikut merupakan code pelatihan model: 
+```python
+lr = LogisticRegression().fit(X_train_scaled, y_train_resampled)
+```
+
+**Logistic Regression** adalah algoritma klasifikasi yang digunakan untuk memprediksi probabilitas suatu kejadian dengan model berbasis fungsi logit. Prosesnya dimulai dengan menghitung bobot awal untuk masing-masing fitur, kemudian memperbarui bobot tersebut menggunakan teknik optimasi seperti Gradient Descent guna meminimalkan fungsi kerugian, yaitu log loss. Model ini menghasilkan nilai probabilitas, yang kemudian diklasifikasikan ke dalam kelas tertentu berdasarkan ambang batas (threshold) yang telah ditentukan.
+
+**Parameter yang Digunakan:**
+
+- `penalty`: Jenis regulasi yang digunakan untuk mencegah overfitting (misalnya l1, l2, atau elasticnet).
+
+- `C`: Parameter regulasi yang mengontrol kekuatan regularisasi (nilai lebih kecil = regulasi lebih kuat).
+
+- `solver`: Metode optimasi yang digunakan untuk memperkirakan parameter (misalnya liblinear, saga, atau lbfgs).
+
+- `max_iter`: Jumlah iterasi maksimum saat proses optimasi berlangsung.
+
+**Kelebihan**
+
+- Proses pelatihan cepat dan sederhana.
+
+- Memberikan probabilitas prediksi, sehingga bisa digunakan untuk berbagai analisis risiko.
+
+- Cocok untuk data dengan jumlah fitur tidak terlalu banyak.
+
+**Kekurangan**
+
+- Kurang efektif untuk masalah non-linear tanpa transformasi fitur.
+
+- Sensitif terhadap outlier.
+
+### 4. Model K-Nearest Neighbors (KNN)
+
+Algoritma k-tetangga terdekat (KNN) adalah pengklasifikasi pembelajaran non-parametrik dan terawasi, yang menggunakan kedekatan untuk membuat klasifikasi atau prediksi tentang pengelompokan titik data individu.
+
+Berikut adalah kode pelatihan model.
+
+```python
+knn = KNeighborsClassifier().fit(X_train_scaled, y_train_resampled)
+```
+
+**Tahapan**
+
+**K-Nearest Neighbors** merupakan algoritma klasifikasi yang melakukan prediksi berdasarkan kedekatan data. Saat diberikan data baru, algoritma ini menghitung jarak antara data tersebut dengan seluruh data pada dataset pelatihan, menggunakan metrik seperti Euclidean atau Manhattan distance. Data kemudian diklasifikasikan berdasarkan mayoritas label dari k tetangga terdekatnya. Proses ini tidak memerlukan pelatihan model sebelumnya, sehingga termasuk metode lazy learning.
+
+**Parameter yang Digunakan**
+
+- `n_neighbors`: Jumlah tetangga terdekat yang akan digunakan untuk menentukan label.
+
+- `weights`: Bobot yang diberikan pada tetangga (misalnya uniform atau distance).
+
+- `metric`: Metode perhitungan jarak antar data (seperti euclidean, manhattan, atau minkowski).
+
+**Kelebihan**
+
+- Sederhana dan mudah diimplementasikan.
+
+- Dapat digunakan untuk klasifikasi maupun regresi.
+
+- Tidak memerlukan asumsi khusus terhadap distribusi data.
+
+**Kekurangan**
+
+- Lambat pada dataset berukuran besar karena harus menghitung jarak ke seluruh data.
+
+- Sensitif terhadap skala fitur dan nilai k yang dipilih.
+
+- Rentan terhadap outlier.
+
+## 📌 Hyperparameter Tuning
+
+Agar model dapat bekerja lebih optimal, dilakukan pencarian kombinasi hyperparameter terbaik melalui proses **hyperparameter tuning**. **GridSearchCV** digunakan untuk menguji berbagai kemungkinan nilai parameter dan menentukan yang paling optimal.
+
+Contoh kode tuning untuk **Random Forest**:
+
+```python
+param_grid_rf = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [5, 10, 20],
+    'min_samples_split': [2, 5, 10]
+}
+grid_rf = GridSearchCV(RandomForestClassifier(), param_grid_rf, cv=5)
+grid_rf.fit(X_train_scaled, y_train_resampled)
+
+print("Best Params for Random Forest:", grid_rf.best_params_)
+best_rf = grid_rf.best_estimator_
+```
+
+Berikut adalah parameter yang digunakan untuk pelatihan tiap model hasil dari hyperparameter tuning
+![image](https://github.com/user-attachments/assets/f68bfde4-4056-4fd6-8641-9d4b58c2de49)
+
+### 📌 Pemilihan Model Terbaik
+
+Random Forest (RF) dipilih sebagai metode terbaik untuk menganalisis dataset anemia yang terdiri dari 534 data karena algoritma ini mampu meminimalkan risiko overfitting menggunakan pendekatan ensemble, sehingga model yang dihasilkan lebih andal dan akurat. Selain bisa mengatasi hubungan non-linier antar fitur, RF juga memberikan informasi tentang pentingnya tiap fitur untuk membantu analisis lanjutan. Keunggulan lainnya, model ini tidak terpengaruh oleh skala fitur, bisa langsung menangani data yang hilang tanpa perlu standarisasi, dan tetap menghasilkan performa yang stabil meskipun jumlah datanya relatif sedikit. Meski begitu, hasil evaluasi tetap harus diperhatikan dengan memeriksa metrik seperti accuracy, precision, recall, dan F1-score guna memastikan performa model tetap optimal.
+
+## 📌 Evaluasi 
+
+Pada tahap evaluasi model, digunakan metrik **Akurasi, Precision, Recall, dan F1-Score** untuk menilai kinerja model. Pemilihan metrik ini didasarkan pada relevansinya terhadap permasalahan klasifikasi biner dalam proyek ini, yakni untuk memprediksi apakah seorang individu teridentifikasi mengalami anemia atau tidak.
+
+**1. Akurasi**
+
+Akurasi adalah Mengukur seberapa banyak prediksi yang benar dibandingkan dengan total jumlah prediksi. Semakin tinggi akurasi, semakin banyak prediksi yang tepat.
+
+ $$
+  \text{Akurasi} = \frac{\text{True Positives} + \text{True Negatives}}{\text{Total Observations}}
+  $$
+
+Dimana **True Positives (TP)** adalah jumlah individu yang memang mengalami anemia dan berhasil diprediksi dengan benar sebagai penderita anemia, sedangkan **True Negatives (TN)** merupakan jumlah individu yang sebenarnya tidak mengalami anemia dan diprediksi dengan tepat sebagai tidak menderita anemia. Nilai akurasi yang tinggi menunjukkan bahwa model mampu melakukan prediksi yang benar terhadap sebagian besar data secara keseluruhan.
+  
+**2. Precision**
+
+Precision adalah Menghitung proporsi data positif yang diprediksi benar dari semua data yang diprediksi positif. Artinya, seberapa tepat model saat memprediksi kasus positif.
+
+ $$
+  \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
+  $$
+
+Precision yang tinggi menunjukkan bahwa model memiliki ketelitian yang baik dalam mengklasifikasikan individu sebagai penderita anemia, dengan jumlah kesalahan klasifikasi positif (false positives) yang lebih sedikit. Artinya, ketika model memprediksi seseorang menderita anemia, kemungkinan besar prediksi tersebut benar. Tingginya precision penting dalam situasi di mana kesalahan dalam memberikan diagnosis harus dihindari, karena dapat berdampak serius jika individu sehat didiagnosis secara keliru.
+
+**3. Recall**
+
+Recall adalah Mengukur seberapa banyak data positif yang berhasil diprediksi benar dari seluruh data positif yang ada. Semakin tinggi recall, semakin sedikit kasus positif yang terlewat.
+
+ $$
+  \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
+  $$
+
+Recall yang tinggi berarti model berhasil mendeteksi sebagian besar individu yang memang mengalami anemia, meskipun mungkin masih terdapat sejumlah kesalahan prediksi negatif (false negatives). Dalam konteks medis, recall yang tinggi lebih diutamakan karena penting untuk menangkap semua pasien yang benar-benar sakit, dibandingkan sekadar mengurangi jumlah prediksi positif yang salah. Ini bertujuan meminimalkan kemungkinan penderita anemia yang tidak terdeteksi.
+
+**4. F1-Score**
+
+F1-Score adalah Rata-rata harmonis dari precision dan recall. F1-Score digunakan untuk menyeimbangkan keduanya, khususnya saat dataset tidak seimbang (imbalanced).
+
+$$
+  \text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+  $$
+
+F1-Score yang tinggi menunjukkan bahwa model memiliki keseimbangan yang baik antara ketepatan prediksi (precision) dan kemampuan dalam mendeteksi seluruh kasus positif (recall). Nilai F1-Score yang baik menandakan bahwa model tidak hanya akurat dalam memprediksi penderita anemia, tetapi juga mampu mengenali sebagian besar individu yang benar-benar sakit. Hal ini sangat penting dalam bidang kesehatan, karena memastikan prediksi tepat dan tidak banyak kasus yang terlewat.
+ 
+## 📌 Hasil Proyek Berdasarkan Metrik Evaluasi
+
+Setelah proses pelatihan dan evaluasi model melalui cross-validation, diperoleh hasil performa yang bervariasi tergantung algoritma yang diterapkan. Secara umum, model yang telah melalui proses penyetelan hyperparameter menunjukkan peningkatan performa meskipun tidak terlalu signifikan dibandingkan dengan kondisi sebelum tuning.
+![image](https://github.com/user-attachments/assets/b1d2a3b5-5066-42df-9c79-a96d1097233c)
+
+Berikut adalah ringkasan metrik evaluasi untuk model yang diuji sebelum dilakukan hyperparameter tuning:
+![image](https://github.com/user-attachments/assets/fc6ce0f7-1d56-417d-ac19-a3f15fe1c9a9)
+
+- **Random Forest (RF)**
+    - Akurasi: 99.07%
+    - Precision: 99.08%
+    - Recall: 99.07%
+    - F1-Score: 99.07%
+  
+  Penjelasan:
+
+Random Forest menunjukkan performa terbaik dalam mendeteksi anemia, dengan nilai akurasi, precision, dan recall yang sangat tinggi. Model ini mampu mengenali hampir seluruh individu yang benar-benar menderita anemia, sekaligus menjaga tingkat kesalahan prediksi tetap rendah. Keseimbangan antara ketepatan prediksi positif dan kemampuan mendeteksi semua kasus anemia membuat Random Forest menjadi pilihan yang sangat unggul untuk konteks medis seperti ini.
+
+- **Decision Tree (DT)**
+    - Akurasi: 97.20%
+    - Precision: 97.36%
+    - Recall: 97.20%
+    - F1-Score: 97.20%
+
+  Penjelasan:
+
+  Decision Tree masih memberikan performa yang sangat baik, meskipun sedikit di bawah Random Forest. Precision yang tinggi menunjukkan bahwa sebagian besar prediksi positifnya akurat. Namun, nilai recall yang sedikit lebih rendah dibandingkan Random Forest menunjukkan bahwa model ini sedikit lebih sering melewatkan individu yang benar-benar mengalami anemia. Meskipun demikian, hasilnya tetap solid dan dapat diandalkan.
+  
+- **Logistic Regression (LR)**
+    - Akurasi: 96.26%
+    - Precision: 96.54%
+    - Recall: 96.26%
+    - F1-Score: 96.27%
+
+  Penjelasan:
+
+  Logistic Regression memperlihatkan performa yang cukup baik dengan nilai precision dan recall yang seimbang di angka sekitar 96%. Model ini mampu melakukan prediksi positif dengan baik dan cukup efektif dalam mendeteksi penderita anemia. Meski performanya tidak sebaik Random Forest dan Decision Tree, model ini tetap layak dipertimbangkan, apalagi karena interpretasinya yang sederhana dalam dunia medis.
+
+- **K-Nearest Neighbors (KNN):**
+    - Akurasi: 90.65%
+    - Precision: 91.69%
+    - Recall: 90.66%
+    - F1-Score: 90.66%
+
+  Penjelasan:
+
+  KNN menunjukkan performa paling rendah dibanding model lainnya. Meskipun precision-nya cukup baik, nilai akurasi, recall, dan F1-Score-nya di kisaran 90% menunjukkan bahwa model ini kurang optimal dalam mendeteksi semua individu yang benar-benar mengalami anemia. Nilai recall yang lebih rendah menandakan KNN cenderung melewatkan beberapa kasus positif. Ini bisa disebabkan oleh sensitivitas KNN terhadap jumlah data dan jarak antar data yang mempengaruhi hasil klasifikasinya.
+
+Secara keseluruhan, **Random Forest** menjadi model yang paling unggul dalam hal akurasi, recall, dan keseimbangan metrik evaluasi, diikuti oleh **Decision Tree**, **Logistic Regression**, dan **K-Nearest Neighbors**. Model ini memberikan hasil yang optimal pada dataset yang diuji.
+
+Berikut adalah ringkasan metrik evaluasi untuk model yang diuji **setelah dilakukan hyperparameter tuning**:
+![image](https://github.com/user-attachments/assets/1893fed7-9d9e-4481-b7e1-57243f6cbbc7)
+
+- **Random Forest (RF):**
+    - Akurasi: 99.07%
+    - Precision: 99.08%
+    - Recall: 99.07%
+    - F1-Score: 99.07%
+
+  Penjelasan:
+
+  Setelah dilakukan hyperparameter tuning, performa Random Forest tetap menjadi yang terbaik. Nilai akurasi, precision, recall, dan F1-Score yang sangat tinggi menunjukkan bahwa model ini mampu mendeteksi hampir seluruh kasus anemia dengan tingkat kesalahan prediksi yang sangat rendah. Keseimbangan antara precision dan recall yang tinggi sangat penting dalam konteks medis karena dapat meminimalkan risiko kesalahan diagnosis.
+
+- **Decision Tree (DT):**
+    - Akurasi: 99.07%
+    - Precision: 99.08%
+    - Recall: 99.07%
+    - F1-Score: 99.07%
+
+  Penjelasan:
+
+  Menariknya, setelah hyperparameter tuning, Decision Tree mampu menyamai performa Random Forest dengan nilai metrik yang identik. Hal ini menunjukkan bahwa tuning parameter seperti kedalaman pohon dan jumlah minimum sampel dapat secara signifikan meningkatkan performa Decision Tree hingga setara Random Forest. Model ini menjadi alternatif yang baik karena lebih sederhana secara interpretasi dibanding Random Forest, tanpa harus mengorbankan performa.
+
+- **Logistic Regression (LR):**
+    - Akurasi: 97.20%
+    - Precision: 97.36%
+    - Recall: 97.20%
+    - F1-Score: 97.20%
+
+  Penjelasan:
+
+  Logistic Regression juga mengalami peningkatan performa setelah tuning, meskipun masih di bawah Random Forest dan Decision Tree. Nilai precision dan recall yang seimbang di kisaran 97% menunjukkan model ini cukup andal dalam memprediksi dan mendeteksi kasus anemia. Kelebihan Logistic Regression tetap pada interpretasi model yang lebih mudah dipahami, yang bisa jadi nilai plus dalam dunia medis.
+
+- **K-Nearest Neighbors (KNN):**
+    - Akurasi: 90.65%
+    - Precision: 91.69%
+    - Recall: 90.65%
+    - F1-Score: 90.66%
+
+  Penjelasan:
+
+  Setelah tuning, performa KNN tetap menjadi yang terendah di antara keempat model. Meskipun ada sedikit peningkatan, nilai recall yang masih di angka 90% menunjukkan bahwa model ini cenderung melewatkan beberapa kasus anemia. KNN memang sensitif terhadap pemilihan jumlah tetangga (k) dan skala data, yang bisa menjadi tantangan dalam pengaplikasian pada data medis.
+
+Secara keseluruhan, **Random Forest** tetap menjadi model yang paling disarankan setelah tuning dengan nilai Recall yang sangat tinggi dan metrik evaluasi lainnya yang juga tinggi, diikuti oleh Decision Tree, dengan Logistic Regression dan KNN lebih cocok digunakan dalam skenario yang lebih sederhana.
+
+## 📌 Model Terbaik Berdasarkan Metrik Evaluasi 
+
+Dalam konteks diagnosis medis, nilai **recall** yang tinggi sangat penting karena fokus utamanya adalah mengidentifikasi sebanyak mungkin pasien yang benar-benar mengalami anemia. Kesalahan dalam bentuk **false negative**, yaitu kasus di mana penderita anemia tidak terdeteksi, dapat berdampak serius karena individu tersebut tidak akan mendapatkan penanganan yang dibutuhkan. Oleh sebab itu, model dengan performa recall yang baik, seperti **Random Forest**, menjadi pilihan utama karena mampu mengenali lebih banyak kasus anemia secara akurat. Selain itu, **Random Forest** menunjukkan hasil evaluasi model yang sangat baik. Walaupun **Decision Tree** memberikan hasil yang kompetitif, Random Forest dinilai sedikit lebih unggul berkat kemampuannya dalam meminimalkan risiko overfitting melalui pendekatan ensemble. Oleh karena itu, Random Forest dipilih sebagai model yang paling optimal dalam proyek ini.
+
+
+## 📌 Evaluasi Pemahaman Bisnis
+
+- Model klasifikasi yang dikembangkan **mampu mengidentifikasi apakah seseorang menderita anemia berdasarkan data medis sederhana** seperti kadar hemoglobin, MCH, MCV, dan MCHC. Penerapan algoritma machine learning seperti Random Forest, Decision Tree, Logistic Regression, serta K-Nearest Neighbors memungkinkan prediksi status anemia (Anemic atau Not Anemic) tanpa memerlukan pemeriksaan laboratorium yang mahal. Solusi ini memberikan alternatif yang lebih efisien, hemat biaya, dan lebih mudah dijangkau dibandingkan metode konvensional berbasis tes laboratorium.
+
+- Melalui proses Exploratory Data Analysis (EDA), diketahui bahwa kadar **hemoglobin memiliki pengaruh paling signifikan dalam menentukan status anemia**. Hubungan yang sangat kuat antara hemoglobin dan status anemia menjadikan fitur ini sebagai indikator utama. Fitur lain seperti MCV dan MCHC juga memberikan kontribusi meskipun tidak sebesar hemoglobin.
+
+- Kinerja dari model diukur melalui berbagai metrik seperti akurasi, presisi, recall, dan F1-score. Optimalisasi model dilakukan melalui teknik hyperparameter tuning menggunakan Grid Search untuk memperoleh konfigurasi parameter terbaik. Hasil tuning menunjukkan adanya peningkatan performa model pada seluruh metrik evaluasi, yang membuat model ini semakin andal dalam mendeteksi anemia secara tepat.
+
+## 📌 Kesimpulan 
+
+Dalam proyek ini, telah dikembangkan model machine learning untuk mendeteksi anemia menggunakan data medis sederhana seperti hemoglobin, MCV, MCH, dan MCHC. Berbagai algoritma seperti Random Forest, Logistic Regression, dan Decision Tree digunakan, serta performanya ditingkatkan melalui proses hyperparameter tuning dengan Grid Search. Berdasarkan hasil evaluasi, algoritma Random Forest menunjukkan kinerja paling unggul dalam memprediksi anemia dengan nilai akurasi, presisi, recall, dan F1-score yang tinggi. Model ini menawarkan alternatif diagnosis dini anemia yang lebih cepat dan terjangkau, sehingga dapat menjadi solusi efektif untuk mengatasi keterlambatan dalam proses deteksi penyakit tersebut.
+
+
